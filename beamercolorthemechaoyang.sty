@@ -1,0 +1,76 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamercolorthemechaoyang}[2023/03/01]
+
+\definecolor{cyBGwhite}{RGB}{243,246,247}
+\definecolor{cyFGblue}{RGB}{0,45,76}
+\definecolor{cyTOPlightgreen}{RGB}{162,196,38}
+
+% block title colors
+\definecolor{cyBLOCKTblue}{RGB}{43,75,107}
+\definecolor{cyALERTTred}{RGB}{156,19,8}
+\definecolor{cyEXAMPLETgreen}{RGB}{3,88,24}
+
+\definecolor{cyBLOCKBblue}{RGB}{219,232,245}
+\definecolor{cyALERTBred}{RGB}{254,224,222}
+\definecolor{cyEXAMPLEBgreen}{RGB}{212,236,226}
+
+\setbeamercolor{normal text}{fg=black!95, bg=cyBGwhite}
+
+\setbeamercolor{alerted text}{%
+  fg=cyALERTTred
+}
+
+\setbeamercolor{example text}{%
+  fg=cyEXAMPLETgreen
+}
+
+\setbeamercolor{titlelike}{use=normal text, parent=normal text}
+\setbeamercolor{author}{use=normal text, parent=normal text}
+\setbeamercolor{date}{use=normal text, parent=normal text}
+\setbeamercolor{institute}{use=normal text, parent=normal text}
+\setbeamercolor{structure}{use=normal text, fg=normal text.fg}
+
+\setbeamercolor{palette primary}{%
+  use=normal text,
+  fg=white!2,
+  bg=cyFGblue
+}
+
+\setbeamercolor{frametitle}{%
+  use=palette primary,
+  parent=palette primary
+}
+
+\setbeamercolor{progress bar}{%
+  use=alerted text,
+  fg=alerted text.fg,
+  bg=alerted text.fg!50!black!30
+}
+
+\setbeamercolor{title separator}{
+  use=progress bar,
+  parent=progress bar
+}
+
+\setbeamercolor{progress bar in head/foot}{%
+  use=progress bar,
+  parent=progress bar
+}
+
+\setbeamercolor{progress bar in section page}{
+  use=progress bar,
+  parent=progress bar
+}
+
+\setbeamercolor{block title}{use=structure,fg=black!2,bg=cyFGblue!95}
+\setbeamercolor{block title alerted}{use=alerted text,fg=black!2,bg=cyALERTTred}
+\setbeamercolor{block title example}{use=example text,fg=black!2,bg=cyEXAMPLETgreen}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=cyFGblue!5!normal text.bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=cyALERTTred!5!normal text.bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=cyEXAMPLETgreen!5!normal text.bg}
+
+\setbeamercolor{footnote}{fg=normal text.fg!90}
+\setbeamercolor{footnote mark}{fg=.}
+
+\mode<all>
+\endinput
