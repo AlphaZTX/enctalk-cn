@@ -6,6 +6,7 @@
 \usetheme{chaoyang}
 \usefonttheme{professionalfonts}
 \usepackage[normalem]{ulem}
+\usepackage{amsmath}
 \usepackage[no-math]{fontspec}
 \usepackage{xeCJK,unicode-math}
 \setmainfont{Fira Sans}
@@ -52,6 +53,7 @@
 \DeclareRobustCommand\pdflatex{pdf\LaTeX}
 \DeclareRobustCommand\lualatex{Lua\LaTeX}
 \DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}}
+\DeclareRobustCommand\meta[1]{$\langle\hbox{\itshape#1}\rangle$}
 \ExplSyntaxOn
 \DeclareDocumentCommand \texfonttable { m O{\csname f@size\endcsname pt} }
   {
@@ -429,45 +431,144 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 \end{frame}
 
 \begin{frame}{\LaTeX\ font encodings}
-字体命令：
+\centering
+
+%\LaTeXe{} 字体命令
 \cs{csname}%
 \tikz[remember picture,inner sep=0pt,baseline=(currfontshape.base)]
   \node[black!60] (currfontshape) {\cs{curr@fontshape}};%
-/%
+\texttt/%
 \tikz[remember picture,inner sep=0pt,baseline=(fsize.base)]
   \node[black!60] (fsize) {\cs{f@size}};%
-\cs{endcsname}\pause
+\cs{endcsname}%
+\pause
 
 \vskip2ex
 {\color{lightgray}$\displaystyle\mathop{\overbrace{\hbox{\normalcolor%
 \tikz[remember picture,inner sep=0pt,baseline=(fencoding.base)]
   \node[black!60] (fencoding) {\cs{f@encoding}};%
-/%
-\tikz[remember picture,inner sep=0pt,baseline=(fencoding.base)]
+\texttt/%
+\tikz[remember picture,inner sep=0pt,baseline=(ffamily.base)]
   \node[black!60] (ffamily) {\cs{f@family}};%
-/%
-\tikz[remember picture,inner sep=0pt,baseline=(fencoding.base)]
+\texttt/%
+\tikz[remember picture,inner sep=0pt,baseline=(fseries.base)]
   \node[black!60] (fseries) {\cs{f@series}};%
-/%
-\tikz[remember picture,inner sep=0pt,baseline=(fencoding.base)]
+\texttt/%
+\tikz[remember picture,inner sep=0pt,baseline=(fshape.base)]
   \node[black!60] (fshape) {\cs{f@shape}};%
 }}}^{\hbox to 0pt{\hss
   \tikz[remember picture] \node[inner sep=0pt] (currfontshape2) {};%
 \hss}}$}
 
-\tikz[remember picture,overlay] \draw[-stealth,thick,out=270,in=90]
+\tikz[remember picture,overlay] \draw[-stealth,thick,out=270,in=90,cyBLOCKTblue]
   (currfontshape) to (currfontshape2);\pause
 
+\vskip1ex
+\texttt{\textbackslash}%
+\tikz[remember picture,inner sep=0pt,baseline=(fencopt.base)]
+  \node[gray] (fencopt)
+  {$\begin{Bmatrix}
+    \texttt{TU}\\ \texttt{OT1}\\ \texttt{OML}\\ \cdots
+  \end{Bmatrix}$};%%
+\texttt/%
+\tikz[remember picture,inner sep=0pt,baseline=(ffamopt.base)]
+  \node[gray] (ffamopt)
+  {$\begin{Bmatrix}
+    \texttt{cmr}\\ \texttt{lmr}\\ \texttt{ptm}\\ \cdots
+  \end{Bmatrix}$};%
+\texttt/%
+\tikz[remember picture,inner sep=0pt,baseline=(fseropt.base)]
+  \node[gray] (fseropt)
+  {$\begin{Bmatrix}
+    \texttt{m}\\ \texttt{b}\\ \texttt{bx}\\ \cdots
+  \end{Bmatrix}$};%
+\texttt/%
+\tikz[remember picture,inner sep=0pt,baseline=(fshaopt.base)]
+  \node[gray] (fshaopt)
+  {$\begin{Bmatrix}
+    \texttt{n}\\ \texttt{it}\\ \texttt{sl}\\ \cdots
+  \end{Bmatrix}$};%
+\texttt/%
+\tikz[remember picture,inner sep=0pt,baseline=(fsizopt.base)]
+  \node[gray] (fsizopt)
+  {$\begin{Bmatrix}
+  \texttt{10}\\ \texttt{7}\\ \texttt{5}\\ \cdots
+  \end{Bmatrix}$};%
+\pause
+
+\tikz[remember picture,overlay]
+  \draw[-stealth,thick,out=270,in=90,cyEXAMPLETgreen]
+    (fencoding.south) to (fencopt.north);
+\tikz[remember picture,overlay]
+  \draw[-stealth,thick,out=270,in=90,cyEXAMPLETgreen]
+    (ffamily.south) to (ffamopt.north);
+\tikz[remember picture,overlay]
+  \draw[-stealth,thick,out=270,in=90,cyEXAMPLETgreen]
+    (fseries.south) to (fseropt.north);
+\tikz[remember picture,overlay]
+  \draw[-stealth,thick,out=270,in=90,cyEXAMPLETgreen]
+    (fshape.south) to (fshaopt.north);
+\tikz[remember picture,overlay]
+  \draw[-stealth,thick,cyEXAMPLETgreen]
+    (fsize.north) .. controls +(4,3) and +(4.5,2) .. (fsizopt.north east);
+
+\end{frame}
+
+\begin{frame}[fragile]{\LaTeX\ font encodings}
 \begin{exampleblock}{Example}
-\cs{OT1/cmr/m/n/10}\hfill\pdflatex         \\
+\cs{OT1/cmr/m/n/10}\hfill\pdflatex\\
 \cs{TU/lmr/m/n/10}\hfill\xelatex/\lualatex
+\end{exampleblock}
+\pause
+\begin{exampleblock}{Plain \TeX\ version}
+\begin{minted}{tex}
+\expandafter\font
+  \csname OT1/cmr/m/n/10\endcsname
+    = cmr10 at 10pt
+\end{minted}
+\begin{minted}{tex}
+\expandafter\font
+  \csname TU/lmr/m/n/10\endcsname
+    = "[lmroman10-regular]" at 10pt
+\end{minted}
 \end{exampleblock}
 \end{frame}
 
-%\begin{frame}{\cs{OT1/cmr/m/n/10}}
-%\texfonttable{cmr10}
-%\end{frame}
+\begin{frame}{\cs{OT1/cmr/m/n/10}\small\texttt{ = cmr10 at 10pt}}
+\texfonttable{cmr10}
+\end{frame}
 
+\begin{frame}{\cs{TU/lmr/m/n/10}\small\texttt{ = "[lmroman10-regular]" at 10pt}}
+\texfonttable{"[lmroman10-regular.otf]"}
+\end{frame}
 
+\begin{frame}{参考}
+\begin{thebibliography}{9}
+\bibitem{unicode}
+  The Unicode standard.\newblock
+  \href{https://www.unicode.org/versions/latest/}
+       {\ttfamily unicode.org}
+\bibitem{plain}
+  \textit{Knuth D.}\enskip
+  plain.tex (plain format kernel).\newblock
+  \href{http://mirrors.ctan.org/macros/plain/base/plain.tex}
+       {\ttfamily TDS:/tex/plain/base/plain.tex}
+\bibitem{encguide}
+  \textit{Mittelbach F.} and \textit{others}.\enskip
+  \LaTeX\ font encodings.\newblock
+  \href{http://mirrors.ctan.org/macros/latex/base/encguide.pdf}
+       {\ttfamily texdoc encguide}
+\bibitem{fntguide}
+  \textit{\LaTeX\ Project Team}.\enskip
+  \LaTeXe\ font selection.\newblock
+  \href{http://mirrors.ctan.org/macros/latex/base/fntguide.pdf}
+       {\ttfamily texdoc fntguide}
+\bibitem{source2e}
+  \textit{Braams J.} and \textit{others}.\enskip
+  The \LaTeXe\ sources.\newblock
+  \href{http://mirrors.ctan.org/macros/latex/base/source2e.pdf}
+       {\ttfamily texdoc source2e}
+\end{thebibliography}
+\end{frame}
 
 \end{document}
