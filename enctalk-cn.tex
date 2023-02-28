@@ -1,5 +1,4 @@
 \documentclass{beamer}
-\input{ot1cmr.fd}
 \newcount\tempcnt
 \newcounter{temp}
 \newtoks\temptoks
@@ -128,7 +127,7 @@
 #include <stdio.h>
 char foo = 65;
 int main() {
-    print("%c", foo);
+    printf("%c", foo);
     return 0;
 }
 \end{minted}
