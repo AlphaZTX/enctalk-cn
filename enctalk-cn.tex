@@ -2,6 +2,7 @@
 \newcount\tempcnt
 \newcounter{temp}
 \newtoks\temptoks
+\newdimen\tempdim
 \usetheme{chaoyang}
 \usefonttheme{professionalfonts}
 \usepackage[normalem]{ulem}
@@ -18,6 +19,7 @@
 \newfontfamily\lmmono{Latin Modern Mono}
 \newfontfamily\cmuntt{CMU Typewriter Text}
 \newfontfamily\stixtwo{STIX Two Text}
+\newfontfamily\stixtwomath{STIX Two Math}
 \setCJKmainfont{Source Han Sans SC}
 \setCJKsansfont{Source Han Sans SC}
 \setCJKmonofont{Source Han Sans SC Normal}
@@ -37,6 +39,7 @@
   w{l}{2.35em}%
   <{\special{color pop}\global\advance\tempcnt by 1}}
 \makeatletter
+\protected\def\textstar{{\stixtwomath\char"22C6}}
 \DeclareRobustCommand\LaTeX{L\kern-.27em%
   {\sbox\z@ T%
    \vbox to\ht\z@{\hbox{\check@mathfonts
@@ -53,6 +56,7 @@
 \DeclareRobustCommand\lualatex{Lua\LaTeX}
 \DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}}
 \DeclareRobustCommand\meta[1]{$\langle\hbox{\itshape#1}\rangle$}
+\DeclareRobustCommand\marg[1]{\texttt\{\meta{#1}\texttt\}}
 \ExplSyntaxOn
 \DeclareDocumentCommand \texfonttable { m O{\csname f@size\endcsname pt} }
   {
@@ -206,11 +210,11 @@ x & y & z & \char`\{ & \char`\| & \char`\} & \char`\~ & \scalebox{.6667}[1]{DEL}
 \end{frame}
 
 \begin{frame}{ASCII}
-\begin{exampleblock}{例}
+\begin{exampleblock}{Example}
 \leavevmode\hbox to 3em{[SP]:\hss}%
-\hbox to 6em{$32=2^5$\hss}→\quad$010\,0000\,\texttt{(bin)}$;\\
+\hbox to 6em{$32=2^5$\hss}→\quad$010\,0000\,\hbox{(bin)}$;\\
 \leavevmode\hbox to 3em{A:\hss}%
-\hbox to 6em{$65=2^6+1$\hss}→\quad$100\,0001\,\texttt{(bin)}$;
+\hbox to 6em{$65=2^6+1$\hss}→\quad$100\,0001\,\hbox{(bin)}$;
 \end{exampleblock}
 \end{frame}
 
@@ -399,12 +403,12 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 \texfonttable{cmr10}
 \end{frame}
 
-\begin{frame}{cmti10 --- text italic}
-\texfonttable{cmti10}
-\end{frame}
-
 \begin{frame}{cmbx10 --- boldface extended}
 \texfonttable{cmbx10}
+\end{frame}
+
+\begin{frame}{cmti10 --- text italic}
+\texfonttable{cmti10}
 \end{frame}
 
 \begin{frame}{cmmi10 --- math italic}
@@ -412,6 +416,10 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 \end{frame}
 
 \begin{frame}{cmsy10 --- math symbols}
+\font\tempfont=cmsy10 at \csname f@size\endcsname pt%
+\setbox0=\hbox{\tempfont\char"70}%
+\tempdim=\dp0%
+\vskip.54\tempdim%
 \texfonttable{cmsy10}
 \end{frame}
 
@@ -421,7 +429,7 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 
 \begin{frame}{\LaTeX\ font encodings}
 \begin{exampleblock}{Font encodings}
-\makebox[2.5em][l]{\texttt{OT1}:}\TeX\ text\hfill ---cmr10, cmti10, cmbx10, etc;\\
+\makebox[2.5em][l]{\texttt{OT1}:}\TeX\ text\hfill ---cmr10, cmbx10, cmti10, etc;\\
 \makebox[2.5em][l]{\texttt{OML}:}\TeX\ math italic\hfill ---cmmi10;\\
 \makebox[2.5em][l]{\texttt{OMS}:}\TeX\ math symbol\hfill ---cmsy10;\\
 \makebox[2.5em][l]{\texttt{OMS}:}\TeX\ math extension\hfill ---cmex10;\\
@@ -539,6 +547,44 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 
 \begin{frame}{\cs{TU/lmr/m/n/10}\small\texttt{ = "[lmroman10-regular]" at 10pt}}
 \texfonttable{"[lmroman10-regular.otf]"}
+\end{frame}
+
+\begin{frame}{NFSS --- 用户接口}
+\begin{exampleblock}{基本用户命令}
+\begin{itemize}
+\item \cs{fontencoding}\marg{encoding}
+\item \cs{fontfamily}\marg{family}
+\item \cs{fontseries}\marg{series}
+\item \cs{fontshape}\marg{shape}
+\item \cs{fontsize}\marg{size}\marg{baselineskip}
+\item \cs{linespread}\marg{factor}\pause
+\item[\hbox to 4pt{\hss\textstar\hss}] \textbf{\cs{selectfont}}\pause
+\hfill{\color{gray}$\Rightarrow$ \cs{rmfamily}, \cs{mdseries}, \dots}\kern6pt
+\end{itemize}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{NFSS --- \cs{selectfont}}
+\begin{exampleblock}{\cs{selectfont}}
+\begin{enumerate}
+\lineskiplimit4pt
+\lineskip4pt
+\item 设置行距：\cs{baselineskip}\;\texttt=\;\meta{factor}\cs{baselineskip}；
+\item 设置 shape 和 series；
+\item 重定义 \cs{font@name} 并调用它；
+\begingroup
+\color{gray}\scriptsize
+\begin{verbatim}
+\xdef\font@name{%
+  \csname\curr@fontshape/\f@size\endcsname}%
+\pickup@font % 如果 \font@name == \relax，就重新定义一次
+\font@name   % 切换字体
+\end{verbatim}
+\endgroup
+\item \verb|\UseHook{selectfont}| (2021/06)；
+\item 更新暂时储存的 size 和 font encoding。
+\end{enumerate}
+\end{exampleblock}
 \end{frame}
 
 \begin{frame}{参考}
