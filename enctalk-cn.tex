@@ -50,10 +50,14 @@
   }%
   \kern-.1em%
   \TeX}
+\DeclareRobustCommand\xe{X\kern-.125em\lower.5ex\hbox{\char"018E}\kern-.08em}
 \DeclareRobustCommand\xelatex{X\kern-.125em\lower.5ex\hbox{\char"018E}%
   \kern-.125em\LaTeX}
 \DeclareRobustCommand\pdflatex{pdf\LaTeX}
 \DeclareRobustCommand\lualatex{Lua\LaTeX}
+\DeclareRobustCommand\exfall[2][.25]{\setbox0=\hbox{#2}%
+  \dp0=\z@
+  \leavevmode@ifvmode\lower#1ex\box0\relax}
 \DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}}
 \DeclareRobustCommand\meta[1]{$\langle\hbox{\itshape#1}\rangle$}
 \DeclareRobustCommand\marg[1]{\texttt\{\meta{#1}\texttt\}}
@@ -584,6 +588,38 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 \item \verb|\UseHook{selectfont}| (2021/06)；
 \item 更新暂时储存的 size 和 font encoding。
 \end{enumerate}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{思考}
+\begin{exampleblock}{plain \TeX}
+为什么输入的 \verb|$\{\}$| 在 PDF 中复制得到 \texttt{fg}？
+\end{exampleblock}
+\begin{exampleblock}{plain \TeX}
+为什么输入的 \verb|$\langle\rangle$| 在 PDF 中复制得到 \texttt{hi}？
+\end{exampleblock}
+\begin{exampleblock}{plain \exfall(\xe\exfall)\TeX%
+  \;+\;\textsf{unimath-plain-xetex.tex}}
+输入的 \verb|$\{\}$| 在 PDF 中复制得到 $\{\}$；
+\end{exampleblock}
+\begin{exampleblock}{plain \exfall(\xe\exfall)\TeX%
+  \;+\;\textsf{unimath-plain-xetex.tex}}
+输入的 \verb|$\langle\rangle$| 在 PDF 中复制得到 $\langle\rangle$；
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{思考}
+\begin{exampleblock}{\pdflatex}
+为什么输入的 \verb|$\{\}$| 在 PDF 中复制得到 \texttt{fg}？
+\end{exampleblock}
+\begin{exampleblock}{\pdflatex}
+为什么输入的 \verb|$\langle\rangle$| 在 PDF 中复制得到 \texttt{hi}？
+\end{exampleblock}
+\begin{exampleblock}{\xelatex\;+\;\textsf{unicode-math.sty}}
+输入的 \verb|$\{\}$| 在 PDF 中复制得到 $\{\}$；
+\end{exampleblock}
+\begin{exampleblock}{\xelatex\;+\;\textsf{unicode-math.sty}}
+输入的 \verb|$\langle\rangle$| 在 PDF 中复制得到 $\langle\rangle$；
 \end{exampleblock}
 \end{frame}
 
