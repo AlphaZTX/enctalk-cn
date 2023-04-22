@@ -109,7 +109,7 @@
 
 \title{字符编码与 \LaTeX{} 中的字体编码}
 \author{AlphaZTX}
-\date{2023/03/01}
+\date{2023/04/22}
 
 \begin{document}
 \maketitle
@@ -119,7 +119,7 @@
 \end{frame}
 
 \begin{frame}{字符编码 (character encoding)}
-\begin{exampleblock}{计算机如何读取“字符”？}\pause
+\begin{exampleblock}{计算机如何读取“字符”？}
 \begin{itemize}%[<+->]
 \item 计算机只能读取 0 和 1；
 \item 计算机只能读取数字；
@@ -335,7 +335,8 @@ x & y & z & \char`\{ & \char`\| & \char`\} & \char`\~ & \scalebox{.6667}[1]{DEL}
 \end{frame}
 
 \begin{frame}{UTF-8}
-\[\left\{
+\[\hbox{<EF BB BF>}\mskip6mu\cdots\mskip6mu
+\left\{
 \vcenter{
 \hbox to 9em{0--127\hss        ($2^7$)}
 \hbox to 9em{128--2047\hss  ($2^{11}$)}
@@ -436,7 +437,7 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 \makebox[2.5em][l]{\texttt{OT1}:}\TeX\ text\hfill ---cmr10, cmbx10, cmti10, etc;\\
 \makebox[2.5em][l]{\texttt{OML}:}\TeX\ math italic\hfill ---cmmi10;\\
 \makebox[2.5em][l]{\texttt{OMS}:}\TeX\ math symbol\hfill ---cmsy10;\\
-\makebox[2.5em][l]{\texttt{OMS}:}\TeX\ math extension\hfill ---cmex10;\\
+\makebox[2.5em][l]{\texttt{OMX}:}\TeX\ math extension\hfill ---cmex10;\\
 \makebox[2.5em][l]{\texttt{TU}:}\TeX\ Unicode\hfill ---OpenType;
 \end{exampleblock}
 \end{frame}
@@ -533,13 +534,13 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 \pause
 \begin{exampleblock}{Plain \TeX\ version}
 \begin{minted}{tex}
-\expandafter\font
-  \csname OT1/cmr/m/n/10\endcsname
+\expandafter
+  \font\csname OT1/cmr/m/n/10\endcsname
     = cmr10 at 10pt
 \end{minted}
 \begin{minted}{tex}
-\expandafter\font
-  \csname TU/lmr/m/n/10\endcsname
+\expandafter
+  \font\csname TU/lmr/m/n/10\endcsname
     = "[lmroman10-regular]" at 10pt
 \end{minted}
 \end{exampleblock}
@@ -626,27 +627,29 @@ A  &    65 &                                     \texttt{\uline{0}1000001} & 1 \
 \begin{frame}{参考}
 \begin{thebibliography}{9}
 \bibitem{unicode}
-  The Unicode standard.\newblock
+  Unicode.org.\enskip
+  \textit{The Unicode standard}, \S3.10.\newblock
+  %<https://www.unicode.org/versions/Unicode15.0.0/UnicodeStandard-15.0.pdf>
   \href{https://www.unicode.org/versions/latest/}
        {\ttfamily unicode.org}
 \bibitem{plain}
-  \textit{Knuth D.}\enskip
-  plain.tex (plain format kernel).\newblock
+  Knuth D.\enskip
+  \textit{plain.tex}.\newblock
   \href{http://mirrors.ctan.org/macros/plain/base/plain.tex}
        {\ttfamily TDS:/tex/plain/base/plain.tex}
 \bibitem{encguide}
-  \textit{Mittelbach F.} and \textit{others}.\enskip
-  \LaTeX\ font encodings.\newblock
+  Mittelbach F. and others.\enskip
+  \textit{\LaTeX\ font encodings}.\newblock
   \href{http://mirrors.ctan.org/macros/latex/base/encguide.pdf}
        {\ttfamily texdoc encguide}
 \bibitem{fntguide}
-  \textit{\LaTeX\ Project Team}.\enskip
-  \LaTeXe\ font selection.\newblock
+  \LaTeX\ Project Team.\enskip
+  \textit{\LaTeXe\ font selection}.\newblock
   \href{http://mirrors.ctan.org/macros/latex/base/fntguide.pdf}
        {\ttfamily texdoc fntguide}
 \bibitem{source2e}
-  \textit{Braams J.} and \textit{others}.\enskip
-  The \LaTeXe\ sources.\newblock
+  Braams J. and others.\enskip
+  \textit{The \LaTeXe\ sources}.\newblock
   \href{http://mirrors.ctan.org/macros/latex/base/source2e.pdf}
        {\ttfamily texdoc source2e}
 \end{thebibliography}
